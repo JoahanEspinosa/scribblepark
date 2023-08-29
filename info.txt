@@ -1,0 +1,11 @@
+Primary color
+#68bf0e
+
+Background color
+#f6efe7
+
+Surface color
+#e1d3c9
+
+Text color
+#333
