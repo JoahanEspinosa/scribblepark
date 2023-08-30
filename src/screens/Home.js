@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import TextareaAutosize from 'react-textarea-autosize';
-import CanvasDraw from "react-canvas-draw";
+import '../styles/Home.css'
 import {createCollection, deleteCollection, insertRow} from "../purr.js"
+import CanvasDraw from "react-canvas-draw";
+import { Button, Container } from 'react-bootstrap';
 
 export const Home = () => {
 const [text, setText] = useState();
@@ -12,29 +14,28 @@ const canvasref=useRef()
 
 useEffect(() => {
     createCollection("entries")
-    // deleteCollection("entries")
 },[])
 
-const handlesave = () => {
+const handlesave = async () => {
     const data = canvasref.current.getSaveData()
-    setDrawing(prev => prev = data)
-    console.log(drawing)
-    insertRow("entries", {text: text, drawing: JSON.stringify(drawing), date: new Date()})
+    insertRow("entries", {text: text, drawing: JSON.stringify(data), date: new Date()})
 }
 const handleload = () => {
-    canvasref.current.loadSaveData(drawing, true)
+    deleteCollection("entries")
 }
 
   return (
-    <Row>
-        <Col sm={6}><TextareaAutosize value={text} onChange={e=>setText(e.target.value)} placeholder="Frogs! Witches! and MORE!" minRows= {25} style={{width: "100%", backgroundColor: "transparent"}}/></Col>
-        <Col sm={6}><CanvasDraw ref={canvasref}/></Col>
-        <button onClick={() => {
-            handlesave()
-        }}>Really Good Button</button>
-        <button onClick={() => {
-            handleload()
-        }}>Even Better Button</button>
-    </Row>
+    <Container>
+        <h1>New journal entry</h1>
+        <Row>
+            <Col sm={6}><TextareaAutosize className="textArea" value={text} onChange={e=>setText(e.target.value)} placeholder="Frogs! Witches! and MORE!" minRows= {25} style={{width: "100%"}}/></Col>
+            <Col sm={6}>
+                <CanvasDraw brushRadius={4} ref={canvasref}/>   
+                <Button style={{backgroundColor: 'green', marginTop: 20}} onClick={() => {
+                    handlesave()
+                }}>Save entry</Button>
+            </Col>
+        </Row>
+    </Container>
   )
 }

@@ -13,6 +13,7 @@ function App() {
     <div>
       <Router>
         <Navcontainer></Navcontainer>
+        <div style={{marginTop: 20}}></div>
         <Routes>
           <Route element={<Home></Home>} path="/"></Route>
           <Route element={<Entries></Entries>} path="/entries"></Route>
